@@ -1,0 +1,101 @@
+Diary interfaces
+================
+
+Entries
+-------
+
+The basic idea of `mutwo.diary` is to write small entries to describe musical content.
+Entries can be used in multiple projects.
+The purpose is to reshape the focus of composition from a project-based scope to a
+higher level.
+
+The basic API to write new entries is by simply initialising a new Entry object:
+
+    >>> Entry("my_entry", context.identifier, int, skip_check=False)
+
+Initialising (without assigning) is enough, because then the entry is auto-committed to
+a Database: the ZODB.
+
+The idea is, to have multiple definition statements in one file. Entries are only
+committed to the Database if they change. The commit process happens automatically.
+
+Then, in the second stage, the user can fetch entries from the database and create
+larger musical structures from those entries.
+
+
+Path
+----
+
+For an entry to be able to autocommit itself, it needs a known path to its committed
+object in the database.
+This is solved by assigning each entry a path, which is basically a string of multiple
+values which are separated by slash (/).
+The path of an entry can be allocated by the arguments which are passed by the user.
+If the paths of two entries are equal, they point to the same position in the database,
+which means that the two entries are also equal.
+So it's only possible to specify exactly one Entry with the same path.
+
+The path of an entry is therefore composed by variables which don't change:
+    
+    - name
+    - context identifier
+    - return type
+    - ...
+
+
+Instable path
+-------------
+
+But there are also entry arguments, which may be desired to evolve or change over time.
+For instance:
+
+    - relevance
+    - comment
+    - ...
+
+When such an argument changes it is desired to still have the same object,
+but it should only be overridden by its recent changes.
+Arguments which belong to this state belong to the "instable path" of an entry.
+This is also a string which is composed by values separated by a slash (/).
+Instable paths are important to figure out if an entry has changed compared
+to its state in the database.
+
+
+Contexts
+--------
+
+TODO
+
+
+Requirements
+------------
+
+TODO
+
+
+Is supported?
+-------------
+
+TODO
+
+
+Query the database
+------------------
+
+When the user wants to use the entries, which are created in the first step,
+she/he needs to fetch the entries from the database.
+Most often one only wants to use entries with specific properties.
+This can be solved by querying the database.
+There are basically two ways how this can be archived:
+
+    1. Loading all entries and filtering them with a lambda function.
+    2. Filtering entries by using a regex expression which is applied to an entires path.
+
+The first option is useful if one wants to filter an entry by arguments
+which belong to its unstable path.
+Apart from this its not recommended, because it will be much slower, since it
+has to load all objects from the database.
+
+The second option is much faster and recommended if one doesn't want to
+filter entries by an instable path.
+
