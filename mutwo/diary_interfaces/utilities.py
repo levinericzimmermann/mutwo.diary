@@ -1,9 +1,8 @@
-import typing
-
 from BTrees.OOBTree import OOBTree
 import transaction
 
 from mutwo import diary_interfaces
+from mutwo import diary_utilities
 
 
 __all__ = (
@@ -29,11 +28,17 @@ def fetch_wrapped_entry_tree() -> diary_interfaces.qwrap:
     return diary_interfaces.qwrap(fetch_entry_tree())
 
 
-def execute(code: str, function_name: str, *args, **kwargs):
+def execute(name: str, code: str, function_name: str, *args, **kwargs):
     exec(code, locals())
     try:
         function = locals()[function_name]
     # Imitate builtin error message
     except KeyError:
         raise NameError(f"name '{function_name}' is not defined")
-    return function(*args, **kwargs)
+    try:
+        return function(*args, **kwargs)
+    except Exception as e:
+        raise diary_utilities.ExecutionError(
+            f"Raised error when executing {name} with "
+            f"arguments '{args}' and '{kwargs}':\n{e}"
+        )

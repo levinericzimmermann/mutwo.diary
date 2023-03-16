@@ -268,7 +268,7 @@ class DynamicEntry(Entry):
     ) -> bool:
         try:
             return diary_interfaces.execute(
-                self._code, "is_supported", context, **kwargs
+                self.name, self._code, "is_supported", context, **kwargs
             )
         except NameError:
             return super()._is_supported(context, **kwargs)
@@ -286,6 +286,7 @@ class DynamicEntry(Entry):
         kwargs.setdefault("activity_level", self.activity_level)
         try:
             return diary_interfaces.execute(
+                self.name,
                 self._code,
                 self._function_name,
                 context,
