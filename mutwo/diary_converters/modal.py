@@ -60,6 +60,7 @@ class Modal0SequentialEventToEventPlacementTuple(
         self,
         orchestration: music_parameters.Orchestration,
         random_seed: int = 10,
+        add_mod1: bool = True,  # Turn off modal1 mode if not needed for better performance
         **rquery_kwargs,
     ):
         rquery_kwargs.setdefault(
@@ -94,6 +95,7 @@ class Modal0SequentialEventToEventPlacementTuple(
         self._mod0seq2mod1seq = (
             clock_converters.Modal0SequentialEventToModal1SequentialEvent().convert
         )
+        self._add_mod1 = add_mod1
 
     def _context_to_entry_tuple(
         self, context: diary_interfaces.Context
@@ -120,12 +122,16 @@ class Modal0SequentialEventToEventPlacementTuple(
         modal_0_sequential_event_to_convert,
     ) -> tuple[timeline_interfaces.EventPlacement, ...]:
         mod0seq = modal_0_sequential_event_to_convert
-        mod1seq = self._mod0seq2mod1seq(mod0seq)
 
-        context_tuple = self._modal0context(mod0seq) + self._modal1context(mod1seq)
+        context_tuple = self._modal0context(mod0seq)
+
+        if self._add_mod1:
+            mod1seq = self._mod0seq2mod1seq(mod0seq)
+            context_tuple += self._modal1context(mod1seq)
 
         event_placement_list = []
         context_identifier_to_entry_tuple = {}
+        print("\n\n")
         for context in context_tuple:
             try:
                 entry_tuple = context_identifier_to_entry_tuple[context.identifier]
