@@ -47,6 +47,9 @@ class ContextTupleToEventPlacementTuple(core_converters.abc.Converter):
 
         event_placement_list = []
         context_identifier_to_entry_tuple = {}
+
+        self._logger.debug("<<<<< find entries")
+
         for context in context_tuple:
             try:
                 entry_tuple = context_identifier_to_entry_tuple[context.identifier]
@@ -59,11 +62,13 @@ class ContextTupleToEventPlacementTuple(core_converters.abc.Converter):
             )
             entry_relevance_tuple = tuple(e.relevance for e in entry_tuple)
             if picked_entry := self._pick_entry(entry_tuple, entry_relevance_tuple):
-                self._logger.info(f"Picked '{picked_entry.name}'.")
+                self._logger.debug(f"Picked '{picked_entry.name}'.")
                 if (event_placement := picked_entry(context)) is not None:
                     event_placement_list.append(event_placement)
             else:
-                self._logger.info("No entry picked.")
+                self._logger.debug("No entry picked.")
+
+        self._logger.debug"finished >>>>>>>")
 
         return tuple(event_placement_list)
 
