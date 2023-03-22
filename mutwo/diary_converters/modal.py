@@ -66,6 +66,8 @@ class Modal0SequentialEventToEventPlacementTuple(
     ):
         super().__init__(*args, **kwargs)
 
+        self._orchestration = orchestration
+
         self._modal0context = lambda seq: ModalSequentialEventToModalContextTuple(
             diary_interfaces.ModalContext0
         ).convert(seq, self._orchestration)
