@@ -8,9 +8,7 @@ from mutwo import core_utilities
 from mutwo import diary_interfaces
 from mutwo import timeline_interfaces
 
-__all__ = (
-    "ContextTupleToEventPlacementTuple",
-)
+__all__ = ("ContextTupleToEventPlacementTuple",)
 
 
 class ContextTupleToEventPlacementTuple(core_converters.abc.Converter):
@@ -68,7 +66,7 @@ class ContextTupleToEventPlacementTuple(core_converters.abc.Converter):
             else:
                 self._logger.debug("No entry picked.")
 
-        self._logger.debug"finished >>>>>>>")
+        self._logger.debug("finished >>>>>>>")
 
         return tuple(event_placement_list)
 
