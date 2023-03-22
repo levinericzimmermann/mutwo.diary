@@ -18,6 +18,7 @@ __all__ = (
     "CommonContext",
     "ModalContext0",
     "ModalContext1",
+    "MoonContext",
 )
 
 
@@ -93,3 +94,8 @@ class ModalContext0(CommonContext, name="modal0", version=0):
 @dataclasses.dataclass(frozen=True)
 class ModalContext1(CommonContext, name="modal1", version=0):
     modal_event: clock_events.ModalEvent1
+
+
+@dataclasses.dataclass(frozen=True)
+class MoonContext(CommonContext, name="moon", version=0):
+    moon_phase: float = 0
