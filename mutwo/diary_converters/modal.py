@@ -1,7 +1,5 @@
 import typing
 
-import numpy as np
-
 from mutwo import clock_converters
 from mutwo import clock_events
 from mutwo import core_converters
@@ -48,6 +46,9 @@ class ModalSequentialEventToModalContextTuple(core_converters.abc.Converter):
                 end=end,
                 modal_event=modal_event,
                 orchestration=orchestration,
+                # BBB: In old mutwo.clocks version ModalEvent
+                # has not 'energy' attribute.
+                energy=getattr(modal_event, 'energy', 0),
             )
             context_list.append(context)
         return tuple(context_list)
