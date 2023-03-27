@@ -81,20 +81,20 @@ class EmptyContext(Context):
 
 @dataclasses.dataclass(frozen=True)
 class CommonContext(Context):
-    start: core_parameters.abc.Duration
-    end: core_parameters.abc.Duration
-    orchestration: music_parameters.Orchestration
-    energy: int
+    start: core_parameters.abc.Duration = core_parameters.DirectDuration(0)
+    end: core_parameters.abc.Duration = core_parameters.DirectDuration(1)
+    orchestration: music_parameters.Orchestration = music_parameters.Orchestration()
+    energy: int = 0
 
 
 @dataclasses.dataclass(frozen=True)
 class ModalContext0(CommonContext, name="modal0", version=0):
-    modal_event: clock_events.ModalEvent0
+    modal_event: typing.Optional[clock_events.ModalEvent0] = None
 
 
 @dataclasses.dataclass(frozen=True)
 class ModalContext1(CommonContext, name="modal1", version=0):
-    modal_event: clock_events.ModalEvent1
+    modal_event: typing.Optional[clock_events.ModalEvent1] = None
 
 
 @dataclasses.dataclass(frozen=True)
