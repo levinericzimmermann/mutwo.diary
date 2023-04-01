@@ -100,3 +100,7 @@ class ModalContext1(CommonContext, name="modal1", version=0):
 @dataclasses.dataclass(frozen=True)
 class MoonContext(CommonContext, name="moon", version=0):
     moon_phase_index: float = 0
+    scale: music_parameters.Scale = music_parameters.Scale(
+        music_parameters.JustIntonationPitch("1/1"),
+        music_parameters.ScaleFamily((music_parameters.JustIntonationPitch("1/1"),)),
+    )
