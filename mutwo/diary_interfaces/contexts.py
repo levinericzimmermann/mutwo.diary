@@ -85,6 +85,7 @@ class CommonContext(Context):
     end: core_parameters.abc.Duration = core_parameters.DirectDuration(1)
     orchestration: music_parameters.Orchestration = music_parameters.Orchestration()
     energy: int = 0
+    index: int = 0
 
 
 @dataclasses.dataclass(frozen=True)
