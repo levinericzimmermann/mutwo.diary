@@ -66,7 +66,9 @@ class Entry(persistent.Persistent):
             self.commit()
 
         # Sanity check
-        assert self.path not in self.abbreviation_to_path_dict.items()
+        assert (
+            self.path not in self.abbreviation_to_path_dict.items()
+        ), "Can't call itself"
 
     def __str__(self) -> str:
         return repr(self)
@@ -176,8 +178,9 @@ class Entry(persistent.Persistent):
         )
 
     def __call__(self, context: diary_interfaces.Context, **kwargs):
-        assert self._context_identifier == context.identifier
-        assert self.is_supported(context, **kwargs)
+        id_self, id_passed = self._context_identifier, context.identifier
+        assert id_self == id_passed, f"Expected {id_self}, got {id_passed}"
+        assert self.is_supported(context, **kwargs), "Not supported!"
         keyword_argument_dict = dict(self.abbreviation_to_entry_dict)
         keyword_argument_dict.update(kwargs)
         object_ = self._context_to_data(context, **keyword_argument_dict)
