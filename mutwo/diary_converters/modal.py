@@ -36,7 +36,8 @@ class ModalSequentialEventToModalContextTuple(core_converters.abc.Converter):
             absolute_time_tuple,
             duration,
         ) = modal_sequential_event_to_convert._absolute_time_tuple_and_duration
-        for start, end, modal_event in zip(
+        for index, start, end, modal_event in zip(
+            range(len(modal_sequential_event_to_convert)),
             absolute_time_tuple,
             absolute_time_tuple[1:] + (duration,),
             modal_sequential_event_to_convert,
@@ -48,7 +49,8 @@ class ModalSequentialEventToModalContextTuple(core_converters.abc.Converter):
                 orchestration=orchestration,
                 # BBB: In old mutwo.clocks version ModalEvent
                 # has not 'energy' attribute.
-                energy=getattr(modal_event, 'energy', 0),
+                energy=getattr(modal_event, "energy", 0),
+                index=index,
             )
             context_list.append(context)
         return tuple(context_list)
