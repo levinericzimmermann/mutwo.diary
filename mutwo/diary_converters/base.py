@@ -5,6 +5,7 @@ import numpy as np
 
 from mutwo import core_converters
 from mutwo import core_utilities
+from mutwo import diary_converters
 from mutwo import diary_interfaces
 from mutwo import timeline_interfaces
 
@@ -15,6 +16,7 @@ class ContextTupleToEventPlacementTuple(core_converters.abc.Converter):
     def __init__(
         self,
         random_seed: int = 10,
+        logging_level: typing.Optional[int] = None,
         **rquery_kwargs,
     ):
         rquery_kwargs.setdefault(
@@ -35,9 +37,13 @@ class ContextTupleToEventPlacementTuple(core_converters.abc.Converter):
             "return_type", timeline_interfaces.EventPlacement.__name__
         )
 
+        if logging_level is None:
+            logging_level = diary_converters.configurations.LOGGING_LEVEL
+
         self._rquery_kwargs = rquery_kwargs
         self._random = np.random.default_rng(random_seed)
         self._logger = logging.getLogger(f"{__name__}.{type(self).__name__}")
+        self._logger.setLevel(logging_level)
 
     def convert(
         self, context_tuple: tuple[diary_interfaces.Context, ...]
