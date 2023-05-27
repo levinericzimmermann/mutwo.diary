@@ -55,6 +55,7 @@ class ContextTupleToEventPlacementTuple(core_converters.abc.Converter):
         self._logger.debug("<<<<< find entries")
 
         for context in context_tuple:
+            self._logger.debug(f"Try to find entry for context '{context}'...")
             try:
                 entry_tuple = context_identifier_to_entry_tuple[context.identifier]
             except KeyError:
