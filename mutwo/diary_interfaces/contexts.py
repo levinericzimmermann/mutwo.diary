@@ -111,4 +111,4 @@ class MoonContext(CommonContext, name="moon", version=0):
 @dataclasses.dataclass(frozen=True)
 class H103Context(CommonContext, name="h103", version=0):
     attr: str = "tonic"
-    pitch = None
+    pitch: typing.Optional[music_parameters.JustIntonationPitch] = None
