@@ -19,6 +19,7 @@ __all__ = (
     "ModalContext0",
     "ModalContext1",
     "MoonContext",
+    "H103Context",
 )
 
 
@@ -105,3 +106,9 @@ class MoonContext(CommonContext, name="moon", version=0):
         music_parameters.JustIntonationPitch("1/1"),
         music_parameters.ScaleFamily((music_parameters.JustIntonationPitch("1/1"),)),
     )
+
+
+@dataclasses.dataclass(frozen=True)
+class H103Context(CommonContext, name="h103", version=0):
+    attr: str = "tonic"
+    pitch = None
