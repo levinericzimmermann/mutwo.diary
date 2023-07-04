@@ -112,3 +112,4 @@ class MoonContext(CommonContext, name="moon", version=0):
 class H103Context(CommonContext, name="h103", version=0):
     attr: str = "tonic"
     pitch: typing.Optional[music_parameters.JustIntonationPitch] = None
+    other_pitch_tuple: tuple[music_parameters.JustIntonationPitch, ...] = tuple([])
