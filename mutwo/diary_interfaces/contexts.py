@@ -82,9 +82,15 @@ class EmptyContext(Context):
 
 @dataclasses.dataclass(frozen=True)
 class CommonContext(Context):
-    start: core_parameters.abc.Duration = core_parameters.DirectDuration(0)
-    end: core_parameters.abc.Duration = core_parameters.DirectDuration(1)
-    orchestration: music_parameters.Orchestration = music_parameters.Orchestration()
+    start: core_parameters.abc.Duration = dataclasses.field(
+        default_factory=lambda: core_parameters.DirectDuration(0)
+    )
+    end: core_parameters.abc.Duration = dataclasses.field(
+        default_factory=lambda: core_parameters.DirectDuration(1)
+    )
+    orchestration: music_parameters.Orchestration = dataclasses.field(
+        default_factory=lambda: music_parameters.Orchestration()
+    )
     energy: int = 0
     index: int = 0
 
@@ -102,9 +108,13 @@ class ModalContext1(CommonContext, name="modal1", version=0):
 @dataclasses.dataclass(frozen=True)
 class MoonContext(CommonContext, name="moon", version=0):
     moon_phase_index: float = 0
-    scale: music_parameters.Scale = music_parameters.Scale(
-        music_parameters.JustIntonationPitch("1/1"),
-        music_parameters.ScaleFamily((music_parameters.JustIntonationPitch("1/1"),)),
+    scale: music_parameters.Scale = dataclasses.field(
+        default_factory=lambda: music_parameters.Scale(
+            music_parameters.JustIntonationPitch("1/1"),
+            music_parameters.ScaleFamily(
+                (music_parameters.JustIntonationPitch("1/1"),)
+            ),
+        )
     )
 
 
