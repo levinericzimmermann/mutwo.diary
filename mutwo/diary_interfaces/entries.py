@@ -16,12 +16,11 @@ import persistent
 import ranges
 import transaction
 
-from mutwo import clock_events
 from mutwo import common_generators
 from mutwo import diary_interfaces
 
 
-__all__ = ("Entry", "DynamicEntry", "ClockEntry")
+__all__ = ("Entry", "DynamicEntry")
 
 T = typing.TypeVar("T")
 
@@ -298,24 +297,3 @@ class DynamicEntry(Entry):
         except Exception:
             print(f"Raised in '{self.name}'!")
             raise
-
-
-class ClockEntry(DynamicEntry):
-    def __init__(self, *args, duration_range: ranges.Range, **kwargs):
-        self.duration_range = duration_range
-        super().__init__(
-            *args,
-            context_identifier=diary_interfaces.EmptyContext.identifier,
-            return_type=clock_events.ClockEvent,
-            **kwargs,
-        )
-
-    def __hash__(self) -> int:
-        return hash(self.name)
-
-    def __call__(
-        self,
-        context: diary_interfaces.EmptyContext = diary_interfaces.EmptyContext(),
-        **kwargs,
-    ):
-        return super().__call__(context, **kwargs)

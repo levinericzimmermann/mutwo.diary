@@ -7,7 +7,6 @@ import persistent
 
 from mutwo import core_events
 from mutwo import core_parameters
-from mutwo import clock_events
 from mutwo import music_parameters
 
 
@@ -16,8 +15,6 @@ __all__ = (
     "Context",
     "EmptyContext",
     "CommonContext",
-    "ModalContext0",
-    "ModalContext1",
     "MoonContext",
     "H103Context",
 )
@@ -93,16 +90,6 @@ class CommonContext(Context):
     )
     energy: int = 0
     index: int = 0
-
-
-@dataclasses.dataclass(frozen=True)
-class ModalContext0(CommonContext, name="modal0", version=0):
-    modal_event: typing.Optional[clock_events.ModalEvent0] = None
-
-
-@dataclasses.dataclass(frozen=True)
-class ModalContext1(CommonContext, name="modal1", version=0):
-    modal_event: typing.Optional[clock_events.ModalEvent1] = None
 
 
 @dataclasses.dataclass(frozen=True)

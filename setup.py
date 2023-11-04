@@ -31,7 +31,6 @@ setuptools.setup(
         "mutwo.core>=1.2.1, <2.0.0",
         "ZODB>=5.7.0, <6.0.0",
         "numpy>=1.18, <2.00",
-        "mutwo.clock",
     ],
     extras_require=extras_require,
     python_requires=">=3.10, <4",
