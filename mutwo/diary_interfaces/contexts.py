@@ -5,18 +5,10 @@ import typing
 
 import persistent
 
-from mutwo import core_events
-from mutwo import core_parameters
-from mutwo import music_parameters
-
-
 __all__ = (
     "ContextIdentifier",
     "Context",
     "EmptyContext",
-    "CommonContext",
-    "MoonContext",
-    "H103Context",
 )
 
 
@@ -75,38 +67,3 @@ class Context(object):
 
 class EmptyContext(Context):
     ...
-
-
-@dataclasses.dataclass(frozen=True)
-class CommonContext(Context):
-    start: core_parameters.abc.Duration = dataclasses.field(
-        default_factory=lambda: core_parameters.DirectDuration(0)
-    )
-    end: core_parameters.abc.Duration = dataclasses.field(
-        default_factory=lambda: core_parameters.DirectDuration(1)
-    )
-    orchestration: music_parameters.Orchestration = dataclasses.field(
-        default_factory=lambda: music_parameters.Orchestration()
-    )
-    energy: int = 0
-    index: int = 0
-
-
-@dataclasses.dataclass(frozen=True)
-class MoonContext(CommonContext, name="moon", version=0):
-    moon_phase_index: float = 0
-    scale: music_parameters.Scale = dataclasses.field(
-        default_factory=lambda: music_parameters.Scale(
-            music_parameters.JustIntonationPitch("1/1"),
-            music_parameters.ScaleFamily(
-                (music_parameters.JustIntonationPitch("1/1"),)
-            ),
-        )
-    )
-
-
-@dataclasses.dataclass(frozen=True)
-class H103Context(CommonContext, name="h103", version=0):
-    attr: str = "tonic"
-    pitch: typing.Optional[music_parameters.JustIntonationPitch] = None
-    other_pitch_tuple: tuple[music_parameters.JustIntonationPitch, ...] = tuple([])
