@@ -11,9 +11,7 @@ import hashlib
 import typing
 
 import numpy as np
-from BTrees.OOBTree import OOBTree
 import persistent
-import ranges
 import transaction
 
 from mutwo import common_generators
