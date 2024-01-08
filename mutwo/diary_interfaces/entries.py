@@ -214,6 +214,7 @@ class DynamicEntry(Entry):
         code: str,
         function_name: typing.Optional[str] = None,
         random_seed: int = 100,
+        state_count: int = 10,
         **kwargs,
     ):
         self._code = code
@@ -221,6 +222,7 @@ class DynamicEntry(Entry):
             function_name or diary_interfaces.configurations.DEFAULT_FUNCTION_NAME
         )
         self._random_seed = random_seed
+        self._state_count = state_count
         super().__init__(*args, **kwargs)
 
     @classmethod
@@ -242,12 +244,16 @@ class DynamicEntry(Entry):
         return self._random_seed
 
     @functools.cached_property
-    def random(self) -> np.random.default_rng:
-        return np.random.default_rng(self._random_seed)
+    def random_tuple(self) -> tuple[np.random.default_rng, ...]:
+        return tuple(
+            np.random.default_rng(self._random_seed) for _ in range(self._state_count)
+        )
 
     @functools.cached_property
-    def activity_level(self) -> common_generators.ActivityLevel:
-        return common_generators.ActivityLevel()
+    def activity_level_tuple(self) -> common_generators.ActivityLevel:
+        return tuple(
+            common_generators.ActivityLevel() for _ in range(self._state_count)
+        )
 
     @functools.cached_property
     def instable_path_arg_tuple(self) -> tuple[str, ...]:
@@ -282,8 +288,16 @@ class DynamicEntry(Entry):
         # of the entry which calls the other entry. This is
         # impossible if we hard code them (because then 'random'
         # would be provided twice).
-        kwargs.setdefault("random", self.random)
-        kwargs.setdefault("activity_level", self.activity_level)
+        random_tuple = self.random_tuple
+        kwargs.setdefault("random", self.random_tuple[0])
+        for i, r in enumerate(random_tuple):
+            kwargs.setdefault(f"random{i}", r)
+
+        activity_level_tuple = self.activity_level_tuple
+        kwargs.setdefault("activity_level", self.activity_level_tuple[0])
+        for i, a in enumerate(activity_level_tuple):
+            kwargs.setdefault(f"activity_level{i}", a)
+
         try:
             return diary_interfaces.execute(
                 self.name,
