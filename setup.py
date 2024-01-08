@@ -29,6 +29,7 @@ setuptools.setup(
     setup_requires=[],
     install_requires=[
         "mutwo.core>=1.2.1, <2.0.0",
+        "mutwo.common>=0.11.0, <1.0.0",
         "ZODB>=5.7.0, <6.0.0",
         "numpy>=1.18, <2.00",
     ],
